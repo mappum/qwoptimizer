@@ -1,9 +1,10 @@
 var GENERATION_SIZE = 50;
 var BEST_SIZE = 10;
 var TIMEOUT = 300;
-var SPEED_WEIGHT = 350;
-var WORKERS = 6;
+var SPEED_WEIGHT = 1000;
+var WORKERS = 9;
 var MUTATION_RATE = 0.25;
+var LENGTH = 20;
 
 var generation = [];
 var nGen = +localStorage.generations || 0;
@@ -12,8 +13,9 @@ var iframes = [];
 var best = [];
 if(localStorage.best) {
   best = JSON.parse(localStorage.best);
-  for(var i = 0; i < best.length; i++)
+  for(var i = 0; i < best.length; i++) {
     best[i].genotype = new Genotype(best[i].genotype);
+  }
   console.log('Loaded best sequences from localStorage');
 }
 
@@ -27,7 +29,7 @@ function populate() {
       } while(p1 === p2)
       generation.push(p1.genotype.breed(p2.genotype, MUTATION_RATE));
     } else {
-      var g = new Genotype;
+      var g = new Genotype(LENGTH);
       g.randomize();
       generation.push(g);
     }

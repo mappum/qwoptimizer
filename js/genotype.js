@@ -1,9 +1,7 @@
-var LENGTH = 20;
-
 function Genotype(length) {
   if(typeof length === 'number') {
-    this.thighs = new Array(length || LENGTH);
-    this.calves = new Array(length || LENGTH);
+    this.thighs = new Array(length);
+    this.calves = new Array(length);
   } else {
     this.thighs = length.thighs;
     this.calves = length.calves;
