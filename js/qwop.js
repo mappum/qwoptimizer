@@ -57,6 +57,7 @@ window.qwop = {};
 
   qwop.onStageInitialized = function(_stage) {
     stage = _stage;
+    stage._frameRate = 300;
     qwop.onReady();
   };
 
