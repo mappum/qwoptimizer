@@ -11,9 +11,12 @@ var iframes = [];
 
 function populate() {
   for(var i = 0; i < GENERATION_SIZE; i++) {
-    if(best.length > 0) {
-      var p1 = best[Math.random() * best.length | 0];
-      var p2 = best[Math.random() * best.length | 0];
+    if(best.length > 1) {
+      var p1, p2;
+      p1 = best[Math.random() * best.length | 0];
+      do {
+        p2 = best[Math.random() * best.length | 0];
+      } while(p1 === p2)
       generation.push(p1.genotype.breed(p2.genotype));
     } else {
       var g = new Genotype;
@@ -38,7 +41,7 @@ window.addEventListener('message', function(e) {
     var score = data.speed * SPEED_WEIGHT + data.distance;
     if(best.length < BEST_SIZE || score > best[0].score) {
       console.log('Adding to set of best sequences');
-      best.push({ genotype: new Genotype(e.g), score: score });
+      best.push({ genotype: new Genotype(data.g), score: score });
       updateBest();
     }
   }

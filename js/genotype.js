@@ -28,15 +28,16 @@ Genotype.prototype.toString = function() {
 };
 
 Genotype.prototype.breed = function(mate) {
-  var g = new Genotype;
+  var g = new Genotype(this.thighs.length);
 
-  g.thighs = this.thighs.slice(0);
-  for(var i = 0; i < g.thighs.length; i++) {
+  for(var i = 0; i < this.thighs.length; i++) {
     if(Math.random() > 0.5) g.thighs[i] = mate.thighs[i];
+    else g.thighs[i] = this.thighs[i];
   }
-  g.calves = this.calves.slice(0);
-  for(var i = 0; i < g.calves.length; i++) {
+
+  for(var i = 0; i < this.calves.length; i++) {
     if(Math.random() > 0.5) g.calves[i] = mate.calves[i];
+    else g.calves[i] = this.calves[i];
   }
 
   return g;
