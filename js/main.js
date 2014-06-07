@@ -1,5 +1,5 @@
 var GENERATION_SIZE = 50;
-var BEST_SIZE = 4;
+var BEST_SIZE = 10;
 var TIMEOUT = 300;
 var SPEED_WEIGHT = 350;
 var WORKERS = 6;
