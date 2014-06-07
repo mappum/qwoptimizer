@@ -2,13 +2,13 @@ var LENGTH = 20;
 var MUTATION_RATE = 0.085;
 
 function Genotype(length) {
-  if(typeof length === 'string') {
-    var data = JSON.parse(length);
-    this.thighs = data.thighs;
-    this.calves = data.calves;
-  } else {
+  if(typeof length === 'number') {
     this.thighs = new Array(length || LENGTH);
     this.calves = new Array(length || LENGTH);
+  } else {
+    console.log(length)
+    this.thighs = length.thighs;
+    this.calves = length.calves;
   }
 }
 
@@ -21,10 +21,6 @@ Genotype.prototype.addRandom = function(a, set) {
   for(var i = 0; i < a.length; i++) {
     a[i] = set[Math.random()*set.length|0];
   }
-};
-
-Genotype.prototype.toString = function() {
-  return JSON.stringify(this);
 };
 
 Genotype.prototype.breed = function(mate) {

@@ -4,10 +4,17 @@ var TIMEOUT = 300;
 var SPEED_WEIGHT = 350;
 var WORKERS = 6;
 
-var generation = []; 
-var best = [];
-var nGen = 0;
+var generation = [];
+var nGen = +localStorage.generations || 0;
 var iframes = [];
+
+var best = [];
+if(localStorage.best) {
+  best = JSON.parse(localStorage.best);
+  for(var i = 0; i < best.length; i++)
+    best[i].genotype = new Genotype(best[i].genotype);
+  console.log('Loaded best sequences from localStorage');
+}
 
 function populate() {
   for(var i = 0; i < GENERATION_SIZE; i++) {
@@ -31,6 +38,7 @@ function updateBest() {
     return a.score > b.score ? 1 : -1;
   });
   best = best.slice(Math.max(0, best.length - BEST_SIZE - 1));
+  localStorage.best = JSON.stringify(best);
 }
 
 window.addEventListener('message', function(e) {
@@ -49,12 +57,13 @@ window.addEventListener('message', function(e) {
   if(generation.length === 0) {
     console.log('Starting generation ' + ++nGen);
     console.log(best);
+    localStorage.generations = nGen - 1;
     populate();
   }
   var g = generation.shift();
 
   window.postMessage(JSON.stringify({
-    g: g.toString(),
+    g: g,
     to: data.from
   }), '*');
 }, false);

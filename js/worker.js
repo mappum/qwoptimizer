@@ -77,7 +77,7 @@ qwop.onDeath = function() {
   postMessage({
     speed: lastDistance / endFrame,
     distance: lastDistance,
-    g: genotype.toString()
+    g: genotype
   });
   genotype = null;
 };
