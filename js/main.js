@@ -1,7 +1,7 @@
 var GENERATION_SIZE = 50;
 var BEST_SIZE = 10;
 var TIMEOUT = 300;
-var SPEED_WEIGHT = 1000;
+var SPEED_WEIGHT = 8000;
 var WORKERS = 3;
 var MUTATION_RATE = 0.25;
 var LENGTH = 20;
@@ -44,12 +44,17 @@ function updateBest() {
   localStorage.best = JSON.stringify(best);
 }
 
+var initialGeneration = nGen;
 function nextGeneration() {
   console.log('Starting generation ' + ++nGen);
   console.log(best);
   localStorage.generations = nGen - 1;
+
+  // refresh every other generation to fix incremental slowdown
+  if((nGen - initialGeneration) % 2 === 0)
+    location.reload();
+
   populate();
-  resetIframes();
 }
 
 window.addEventListener('message', function(e) {
@@ -78,18 +83,14 @@ window.addEventListener('message', function(e) {
   }
 }, false);
 
-function resetIframes() {
+window.onload = function() {
   var container = document.getElementById('workers');
-  container.innerHTML = '';
-
   for(var i = 0; i < WORKERS; i++) {
       var iframe = document.createElement('iframe');
       iframe.src = 'worker.html#' + i;
       container.appendChild(iframe);
       iframes[i] = iframe.contentWindow;
   }
-}
 
-window.onload = function() {
   nextGeneration();
 };
