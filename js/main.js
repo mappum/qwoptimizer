@@ -2,7 +2,7 @@ var GENERATION_SIZE = 50;
 var BEST_SIZE = 4;
 var TIMEOUT = 300;
 var SPEED_WEIGHT = 350;
-var WORKERS = 2;
+var WORKERS = 6;
 
 var generation = []; 
 var best = [];
