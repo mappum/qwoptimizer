@@ -24,6 +24,8 @@ window.qwop = {};
     return +text.split(' ')[0];
   }
 
+  qwop.onReady = function() {}
+
   qwop.onStart = function() {}
 
   qwop.onDeath = function() {}
@@ -55,6 +57,7 @@ window.qwop = {};
 
   qwop.onStageInitialized = function(_stage) {
     stage = _stage;
+    qwop.onReady();
   };
 
   qwop.key = function(char, up) {

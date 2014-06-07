@@ -15,6 +15,13 @@ function postMessage(message) {
   parent.postMessage(JSON.stringify(message), '*');
 }
 
+qwop.onReady = function() {
+  if(!ready) {
+    ready = true;
+    postMessage({ ready: true });
+  }
+}
+
 qwop.onStart = function() {
   frame = 0;
   lastDistance = 0;
@@ -22,11 +29,6 @@ qwop.onStart = function() {
 };
 
 qwop.onFrame = function() {
-  if(!ready) {
-    ready = true;
-    postMessage({ ready: true });
-  }
-
   if(!genotype) return;
 
   if(!killing) {
@@ -65,12 +67,9 @@ qwop.onFrame = function() {
 qwop.onDeath = function() {
   if(!genotype) return;
 
-  console.log(qwop.isAlive())
-
   if(killing) killing = false;
   else endFrame = frame;
 
-  console.log(lastDistance, endFrame)
   postMessage({
     speed: lastDistance / endFrame,
     distance: lastDistance,
