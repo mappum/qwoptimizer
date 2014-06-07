@@ -41,6 +41,14 @@ function updateBest() {
   localStorage.best = JSON.stringify(best);
 }
 
+function nextGeneration() {
+  console.log('Starting generation ' + ++nGen);
+  console.log(best);
+  localStorage.generations = nGen - 1;
+  populate();
+  resetIframes();
+}
+
 window.addEventListener('message', function(e) {
   var data = JSON.parse(e.data);
   if(typeof data.from === 'undefined') return;
@@ -55,25 +63,30 @@ window.addEventListener('message', function(e) {
   }
 
   if(generation.length === 0) {
-    console.log('Starting generation ' + ++nGen);
-    console.log(best);
-    localStorage.generations = nGen - 1;
-    populate();
-  }
-  var g = generation.shift();
+    nextGeneration();
 
-  window.postMessage(JSON.stringify({
-    g: g,
-    to: data.from
-  }), '*');
+  } else {
+    var g = generation.shift();
+
+    window.postMessage(JSON.stringify({
+      g: g,
+      to: data.from
+    }), '*');
+  }
 }, false);
 
-window.onload = function() {
+function resetIframes() {
   var container = document.getElementById('workers');
+  container.innerHTML = '';
+
   for(var i = 0; i < WORKERS; i++) {
       var iframe = document.createElement('iframe');
       iframe.src = 'worker.html#' + i;
       container.appendChild(iframe);
       iframes[i] = iframe.contentWindow;
   }
+}
+
+window.onload = function() {
+  nextGeneration();
 };
