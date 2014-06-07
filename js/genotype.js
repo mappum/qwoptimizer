@@ -1,5 +1,4 @@
 var LENGTH = 20;
-var MUTATION_RATE = 0.085;
 
 function Genotype(length) {
   if(typeof length === 'number') {
@@ -26,16 +25,18 @@ Genotype.prototype.toString = function() {
   return JSON.stringify(this);
 };
 
-Genotype.prototype.breed = function(mate) {
+Genotype.prototype.breed = function(mate, mutation) {
   var g = new Genotype(this.thighs.length);
 
   for(var i = 0; i < this.thighs.length; i++) {
-    if(Math.random() > 0.5) g.thighs[i] = mate.thighs[i];
+    if(Math.random() < mutation) g.thighs[i] = 'qw_'[Math.random()*3|0];
+    else if(Math.random() > 0.5) g.thighs[i] = mate.thighs[i];
     else g.thighs[i] = this.thighs[i];
   }
 
   for(var i = 0; i < this.calves.length; i++) {
-    if(Math.random() > 0.5) g.calves[i] = mate.calves[i];
+    if(Math.random() < mutation) g.calves[i] = 'op_'[Math.random()*3|0];
+    else if(Math.random() > 0.5) g.calves[i] = mate.calves[i];
     else g.calves[i] = this.calves[i];
   }
 

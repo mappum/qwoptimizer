@@ -3,6 +3,7 @@ var BEST_SIZE = 10;
 var TIMEOUT = 300;
 var SPEED_WEIGHT = 350;
 var WORKERS = 6;
+var MUTATION_RATE = 0.25;
 
 var generation = [];
 var nGen = +localStorage.generations || 0;
@@ -24,7 +25,7 @@ function populate() {
       do {
         p2 = best[Math.random() * best.length | 0];
       } while(p1 === p2)
-      generation.push(p1.genotype.breed(p2.genotype));
+      generation.push(p1.genotype.breed(p2.genotype, MUTATION_RATE));
     } else {
       var g = new Genotype;
       g.randomize();
