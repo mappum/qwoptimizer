@@ -2,7 +2,7 @@ var GENERATION_SIZE = 50;
 var BEST_SIZE = 10;
 var TIMEOUT = 300;
 var SPEED_WEIGHT = 1000;
-var WORKERS = 9;
+var WORKERS = 3;
 var MUTATION_RATE = 0.25;
 var LENGTH = 20;
 
