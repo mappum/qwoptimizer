@@ -8,7 +8,11 @@ var genotype;
 var ready = false;
 
 var id = +window.location.hash.substr(1);
-console.log = parent.console.log;
+console.log = function() {
+  var args = Array.prototype.slice.call(arguments, 0);
+  args.unshift('[worker '+id+']');
+  parent.console.log.apply(parent.console, args);
+};
 
 function postMessage(message) {
   message.from = id;
