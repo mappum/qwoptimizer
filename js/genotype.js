@@ -6,7 +6,6 @@ function Genotype(length) {
     this.thighs = new Array(length || LENGTH);
     this.calves = new Array(length || LENGTH);
   } else {
-    console.log(length)
     this.thighs = length.thighs;
     this.calves = length.calves;
   }
@@ -21,6 +20,10 @@ Genotype.prototype.addRandom = function(a, set) {
   for(var i = 0; i < a.length; i++) {
     a[i] = set[Math.random()*set.length|0];
   }
+};
+
+Genotype.prototype.toString = function() {
+  return JSON.stringify(this);
 };
 
 Genotype.prototype.breed = function(mate) {
