@@ -25,13 +25,9 @@ window.onload = function () {
     console.log('start')
   }
 
-  var didlog = false
   qwop.onFrame = function (e) {
     var distance = qwop.getDistance()
     var state = getState(e, distance)
-
-    if (!didlog)console.log(state)
-    didlog = true
 
     var actionIndex = agent.act(state)
     actions[actionIndex]()
