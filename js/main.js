@@ -41,23 +41,16 @@ window.onload = function () {
 
 }
 
-var keyStates = {
-  q: false,
-  w: false,
-  o: false,
-  p: false
-}
-function press (char) {
-  keyStates[char] = !keyStates[char]
-  qwop.key(char, keyStates[char])
-}
-
 var actions = [
-  // press, // press nothing
-  press.bind(null, 'q'),
-  press.bind(null, 'w'),
-  press.bind(null, 'o'),
-  press.bind(null, 'p')
+  _.noop,
+  qwop.key.bind(null, 'q', true),
+  qwop.key.bind(null, 'w', true),
+  qwop.key.bind(null, 'o', true),
+  qwop.key.bind(null, 'p', true),
+  qwop.key.bind(null, 'q', false),
+  qwop.key.bind(null, 'w', false),
+  qwop.key.bind(null, 'o', false),
+  qwop.key.bind(null, 'p', false)
 ]
 
 function getState (event, distance) {
