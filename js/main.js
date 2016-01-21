@@ -9,7 +9,7 @@ window.onload = function () {
     console.log('start')
   }
 
-  qwop.onFrame = function () {}
+  qwop.onFrame = function (e) {}
 
   qwop.onDeath = function () {
     console.log('death')

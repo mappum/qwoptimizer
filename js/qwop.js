@@ -7,7 +7,20 @@ window.qwop = {};
   var initialized = false, loaded = false;
   var wasDead = false;
 
-  qwop.stage = stage
+  var bodyParts = [
+    'cluarm',
+    'clfarm',
+    'clcalf',
+    'clfoot',
+    'clthigh',
+    'cbody',
+    'cruarm',
+    'crcalf',
+    'crthigh',
+    'crfarm',
+    'chead',
+    'crfoot'
+  ]
 
   qwop.load = function () {
     runViewer('../athletics.swf')
@@ -57,14 +70,31 @@ window.qwop = {};
     } else if (!initialized) {
       initialized = true;
     } else {
-      qwop.onFrame();
+      var world = stage
+        .getChildByName('instance5')
+        .getChildByName('view1')
+        .getChildByName('world1')
+      var event = {}
+      bodyParts.forEach(function (name) {
+        var part = world.getChildByName(name)
+        event[name] = {
+          rotation: part.rotation,
+          angularVelocity: part.$Bgb2body.angularVelocity,
+          velocity: {
+            x: part.$Bgb2body.$Bgm_linearVelocity.$Bgx,
+            y: part.$Bgb2body.$Bgm_linearVelocity.$Bgy
+          }
+        }
+      })
+      qwop.onFrame(event)
     }
-  };
+  }
 
   qwop.onStageInitialized = function (_stage) {
-    stage = _stage;
-    // stage._frameRate = 300;
-    qwop.onReady();
+    stage = _stage
+    qwop.stage = stage
+    // stage._frameRate = 300
+    qwop.onReady()
   };
 
   qwop.key = function (char, up) {
