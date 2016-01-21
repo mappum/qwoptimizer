@@ -54,31 +54,37 @@ var actions = [
 ]
 
 function getState (event, distance) {
-  var state = [distance]
+  var state = [distance,
+    qwop.keysDown['q'] ? 1 : 0,
+    qwop.keysDown['w'] ? 1 : 0,
+    qwop.keysDown['o'] ? 1 : 0,
+    qwop.keysDown['p'] ? 1 : 0
+  ]
   _.map(bodyParts, function (bodyPart) {
     state.push(event[bodyPart].angularVelocity)
     state.push(event[bodyPart].velocity.x)
     state.push(event[bodyPart].velocity.y)
     state.push(event[bodyPart].rotation)
   })
+
   return state
 }
 
 function initAgent () {
   var env = {}
-  env.getNumStates = function () { return 49}
+  env.getNumStates = function () { return 53}
   env.getMaxNumActions = function () { return actions.length }
 
   var spec = {}
   spec.update = 'qlearn'
   spec.gamma = 0.9
-  spec.epsilon = 0.2 // initial epsilon for epsilon-greedy policy, [0, 1)
+  spec.epsilon = 0.2 
   spec.alpha = 0.1 // this'll be lowered soon
-  spec.experience_add_every = 5 // number of time steps before we add another experience to replay memory
+  spec.experience_add_every = 5 
   spec.experience_size = 10 // intentionally low right now, will increase later
   spec.learning_steps_per_iteration = 5
-  spec.tderror_clamp = 1.0 // for robustness
-  spec.num_hidden_units = 100 // number of neurons in hidden layer
+  spec.tderror_clamp = 1.0 
+  spec.num_hidden_units = 100
 
   agent = new RL.DQNAgent(env, spec)
 
