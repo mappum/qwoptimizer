@@ -3,9 +3,10 @@
 window.qwop = {};
 
 (function (qwop) {
-  var stage;
-  var initialized = false, loaded = false;
-  var wasDead = false;
+  var stage
+  var initialized = false
+  var loaded = false
+  var wasDead = false
 
   var bodyParts = [
     'cluarm',
@@ -29,18 +30,17 @@ window.qwop = {};
   qwop.isAlive = function () {
     // a little hacky, searches through stage for dialog box
     for (var i = 0; i < stage._children.length; i++) {
-      var child = stage._children[i];
+      var child = stage._children[i]
       if (child.x === 2600 || child.x === 2520)
-        return false;
+        return false
     }
-    return true;
+    return true
   }
 
-  var distanceObj;
-  var getDistance = qwop.getDistance = function () {
-    if (!distanceObj) distanceObj = stage.getChildByName('instance6');
-    var text = distanceObj.text;
-    return +text.split(' ')[0];
+  qwop.getDistance = function () {
+    var distanceObj = stage.getChildByName('instance6')
+    var text = distanceObj.text
+    return +text.split(' ')[0]
   }
 
   qwop.onReady = function () {}
@@ -50,25 +50,25 @@ window.qwop = {};
   qwop.onDeath = function () {}
 
   qwop.onLoad = function () {
-    loaded = true;
+    loaded = true
 
-    window.removeEventListener('keypress', ShumwayKeyboardListener);
-    window.removeEventListener('keyup', ShumwayKeyboardListener);
-    window.removeEventListener('keydown', ShumwayKeyboardListener);
+    window.removeEventListener('keypress', ShumwayKeyboardListener)
+    window.removeEventListener('keyup', ShumwayKeyboardListener)
+    window.removeEventListener('keydown', ShumwayKeyboardListener)
 
-    qwop.reset();
-  };
+    qwop.reset()
+  }
 
   qwop.onFrame = function () {}
 
   qwop.frameHandler = function () {
     if (!qwop.isAlive()) {
       if (initialized && !wasDead) {
-        wasDead = true;
-        qwop.onDeath();
+        wasDead = true
+        qwop.onDeath()
       }
     } else if (!initialized) {
-      initialized = true;
+      initialized = true
     } else {
       var world = stage
         .getChildByName('instance5')
@@ -77,9 +77,10 @@ window.qwop = {};
       var event = {}
       bodyParts.forEach(function (name) {
         var part = world.getChildByName(name)
+        console.log(part.$Bgb2body)
         event[name] = {
           rotation: part.rotation,
-          angularVelocity: part.$Bgb2body.angularVelocity,
+          angularVelocity: part.$Bgb2body.$Bgm_angularVelocity,
           velocity: {
             x: part.$Bgb2body.$Bgm_linearVelocity.$Bgx,
             y: part.$Bgb2body.$Bgm_linearVelocity.$Bgy
@@ -95,29 +96,29 @@ window.qwop = {};
     qwop.stage = stage
     // stage._frameRate = 300
     qwop.onReady()
-  };
+  }
 
   qwop.key = function (char, up) {
-    var code = (char || '_').toUpperCase().charCodeAt(0);
+    var code = (char || '_').toUpperCase().charCodeAt(0)
     stage._dispatchEvent(new flash.events.KeyboardEvent(
       up ? 'keyUp' : 'keyDown',
       true,
       false,
       code,
       code
-    ));
+    ))
   }
 
   qwop.reset = function () {
     if (!initialized) {
-      stage._mouseTarget._dispatchEvent('click');
+      stage._mouseTarget._dispatchEvent('click')
     } else {
-      qwop.key(' ');
+      qwop.key(' ')
     }
 
     if (loaded) {
-      wasDead = false;
-      qwop.onStart();
+      wasDead = false
+      qwop.onStart()
     }
   }
 })(window.qwop)
