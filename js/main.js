@@ -14,28 +14,34 @@ var bodyParts = [
 ]
 
 window.onload = function () {
+  var frameCount = 0;
   qwop.load()
   var agent = initAgent()
-
+  window.loadNetwork = function(){
+    // clobbers existing agent 
+    agent.fromJSON(JSON.parse(localStorage.getItem('net')))
+    console.log('loaded checkpointed neural net')
+  }
   qwop.onReady = function () {
-    console.log('ready')
   }
 
   qwop.onStart = function () {
-    console.log('start')
   }
 
   qwop.onFrame = function (e) {
+    frameCount++
     var distance = qwop.getDistance()
     var state = getState(e, distance)
-
+    if(frameCount % 1000 === 0){
+      var net = JSON.stringify(agent.toJSON())
+      localStorage.setItem('net', net)
+    }
     var actionIndex = agent.act(state)
     actions[actionIndex]()
     agent.learn(qwop.getDistance()) // meters traveled. higher is better.
   }
 
   qwop.onDeath = function () {
-    console.log('death')
     qwop.reset()
   }
 
@@ -79,7 +85,7 @@ function initAgent () {
   spec.update = 'qlearn'
   spec.gamma = 0.9
   spec.epsilon = 0.2 
-  spec.alpha = 0.1 // this'll be lowered soon
+  spec.alpha = 0.4 // this'll be lowered soon
   spec.experience_add_every = 5 
   spec.experience_size = 10 // intentionally low right now, will increase later
   spec.learning_steps_per_iteration = 5
