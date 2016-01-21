@@ -32,13 +32,15 @@ window.onload = function () {
     frameCount++
     var distance = qwop.getDistance()
     var state = getState(e, distance)
-    if(frameCount % 1000 === 0){
-      var net = JSON.stringify(agent.toJSON())
-      localStorage.setItem('net', net)
-    }
     var actionIndex = agent.act(state)
     actions[actionIndex]()
     agent.learn(qwop.getDistance()) // meters traveled. higher is better.
+    if(frameCount % 100 === 0){
+      var net = JSON.stringify(agent.toJSON())
+      console.log(state)
+      localStorage.setItem('net', net)
+      console.log(actionIndex)
+    }
   }
 
   qwop.onDeath = function () {
@@ -59,6 +61,10 @@ var actions = [
   qwop.key.bind(null, 'p', false)
 ]
 
+function normalize (min, max, value) {
+  return (Math.max(value, min) - min) / (max - min)
+}
+
 function getState (event, distance) {
   var state = [distance,
     qwop.keysDown['q'] ? 1 : 0,
@@ -67,12 +73,11 @@ function getState (event, distance) {
     qwop.keysDown['p'] ? 1 : 0
   ]
   _.map(bodyParts, function (bodyPart) {
-    state.push(event[bodyPart].angularVelocity)
-    state.push(event[bodyPart].velocity.x)
-    state.push(event[bodyPart].velocity.y)
-    state.push(event[bodyPart].rotation)
+    state.push(normalize(-20, 20, event[bodyPart].angularVelocity))
+    state.push(normalize(-20, 20, event[bodyPart].velocity.x))
+    state.push(normalize(-20, 20, event[bodyPart].velocity.y))
+    state.push(normalize(-180, 180, event[bodyPart].rotation))
   })
-
   return state
 }
 
@@ -84,10 +89,10 @@ function initAgent () {
   var spec = {}
   spec.update = 'qlearn'
   spec.gamma = 0.9
-  spec.epsilon = 0.2 
-  spec.alpha = 0.4 // this'll be lowered soon
+  spec.epsilon = 0.02
+  spec.alpha = 0.1
   spec.experience_add_every = 5 
-  spec.experience_size = 10 // intentionally low right now, will increase later
+  spec.experience_size = 1 // intentionally low right now, will increase later
   spec.learning_steps_per_iteration = 5
   spec.tderror_clamp = 1.0 
   spec.num_hidden_units = 100
