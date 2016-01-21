@@ -45,12 +45,15 @@ window.onload = function () {
 
 }
 
+var keyStates = {
+  q: false,
+  w: false,
+  o: false,
+  p: false
+}
 function press (char) {
-  qwop.key('q', false)
-  qwop.key('w', false)
-  qwop.key('o', false)
-  qwop.key('p', false)
-  if (char) qwop.key(char, true)
+  keyStates[char] = !keyStates[char]
+  qwop.key(char, keyStates[char])
 }
 
 var actions = [
