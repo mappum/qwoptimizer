@@ -2,6 +2,7 @@
 
 window.qwop = {};(function (qwop) {
   var stage
+  var world
   var initialized = false
   var loaded = false
   var wasDead = false
@@ -29,15 +30,15 @@ window.qwop = {};(function (qwop) {
     // a little hacky, searches through stage for dialog box
     for (var i = 0; i < stage._children.length; i++) {
       var child = stage._children[i]
-      if (child.x === 2600 || child.x === 2520)
+      if (child.x === 2600 || child.x === 2520) {
         return false
+      }
     }
     return true
   }
 
   qwop.getDistance = function () {
-    var distanceObj = stage.getChildByName('instance6')
-    var text = distanceObj.text
+    var text = stage.getChildByName('instance6').text
     return +text.split(' ')[0]
   }
 
@@ -68,10 +69,6 @@ window.qwop = {};(function (qwop) {
     } else if (!initialized) {
       initialized = true
     } else {
-      var world = stage
-        .getChildByName('instance5')
-        .getChildByName('view1')
-        .getChildByName('world1')
       var event = {}
       bodyParts.forEach(function (name) {
         var part = world.getChildByName(name)
@@ -116,7 +113,18 @@ window.qwop = {};(function (qwop) {
 
     if (loaded) {
       wasDead = false
+      world = getActiveWorld(stage)
       qwop.onStart()
+    }
+  }
+
+  function getActiveWorld (node) {
+    if (!node || !node.getChildByName) return
+    if (node.getChildByName('cluarm')) return node
+    for (var i = 0; i < node._children.length; i++) {
+      var child = node._children[i]
+      var world = getActiveWorld(child)
+      if (world) return world
     }
   }
 })(window.qwop)
