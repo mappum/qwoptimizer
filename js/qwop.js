@@ -38,8 +38,7 @@ window.qwop = {};(function (qwop) {
   }
 
   qwop.getDistance = function () {
-    var text = stage.getChildByName('instance6').text
-    return +text.split(' ')[0]
+    return world.getChildByName('cbody').$Bgb2body.$Bgm_xf.$Bgposition.$Bgx / 10
   }
 
   qwop.onReady = function () {}
