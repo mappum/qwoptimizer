@@ -1,8 +1,6 @@
 // the interface to the QWOP game via the Shumway runtime
 
-window.qwop = {};
-
-(function (qwop) {
+window.qwop = {};(function (qwop) {
   var stage
   var initialized = false
   var loaded = false
@@ -77,7 +75,7 @@ window.qwop = {};
       var event = {}
       bodyParts.forEach(function (name) {
         var part = world.getChildByName(name)
-        console.log(part.$Bgb2body)
+        if (!part) return
         event[name] = {
           rotation: part.rotation,
           angularVelocity: part.$Bgb2body.$Bgm_angularVelocity,
