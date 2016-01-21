@@ -69,7 +69,17 @@ function initAgent () {
   env.getNumStates = function () { return 49}
   env.getMaxNumActions = function () { return actions.length }
 
-  var spec = { alpha: 0.1, gamma: 0.7 }
+  var spec = {}
+  spec.update = 'qlearn'
+  spec.gamma = 0.9
+  spec.epsilon = 0.2 // initial epsilon for epsilon-greedy policy, [0, 1)
+  spec.alpha = 0.1 // this'll be lowered soon
+  spec.experience_add_every = 5 // number of time steps before we add another experience to replay memory
+  spec.experience_size = 10 // intentionally low right now, will increase later
+  spec.learning_steps_per_iteration = 5
+  spec.tderror_clamp = 1.0 // for robustness
+  spec.num_hidden_units = 100 // number of neurons in hidden layer
+
   agent = new RL.DQNAgent(env, spec)
 
   return agent
