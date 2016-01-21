@@ -93,6 +93,8 @@ window.qwop = {};(function (qwop) {
     qwop.onReady()
   }
 
+  qwop.keysDown = {}
+
   qwop.key = function (char, up) {
     var code = (char || '_').toUpperCase().charCodeAt(0)
     stage._dispatchEvent(new flash.events.KeyboardEvent(
@@ -102,6 +104,8 @@ window.qwop = {};(function (qwop) {
       code,
       code
     ))
+
+    qwop.keysDown[char] = up
   }
 
   qwop.reset = function () {
